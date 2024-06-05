@@ -68,7 +68,7 @@ const playMusic = (track, pause = false) => {
   document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
 };
 async function displayAlbums() {
-  let a = await fetch(`songs/`);
+  let a = await fetch(`/songs/`);
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
@@ -79,10 +79,10 @@ async function displayAlbums() {
   for (let index = 0; index < array.length; index++) {
     const e = array[index];
     console.log(e.href);
-    if (e.href.includes("/songs/")) {
-      let folder = e.href.split("/").slice(-2)[1];
+    if (e.href.includes("/songs")) {
+      let folder = e.href.split("/").slice(-2)[0];
       console.log(folder);
-      let a = await fetch(`songs/${folder}/info.json`);
+      let a = await fetch(`/songs/${folder}/info.json`);
       let response = await a.json();
       console.log(response);
       cardContainer.innerHTML =
@@ -106,7 +106,7 @@ async function displayAlbums() {
         </svg>
       </div>
       <img
-        src="songs/${folder}/cover.jpg"
+        src="/songs/${folder}/cover.jpg"
         alt=""
       />
       <h2>${response.title}</h2>
