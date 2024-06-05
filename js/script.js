@@ -13,7 +13,7 @@ function secondsToMinutesSeconds(seconds) {
 }
 async function getSongs(folder) {
   currFolder = folder;
-  let a = await fetch(`${folder}/`);
+  let a = await fetch(`/${folder}/`);
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
@@ -68,20 +68,23 @@ const playMusic = (track, pause = false) => {
   document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
 };
 async function displayAlbums() {
-  let a = await fetch(`/songs/`);
+  let a = await fetch(`songs/`);
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
   let anchors = div.getElementsByTagName("a");
   let cardContainer = document.querySelector(".cardContainer");
   let array = Array.from(anchors);
+  console.log(array);
   for (let index = 0; index < array.length; index++) {
     const e = array[index];
-
-    if (e.href.includes("/songs")) {
-      let folder = e.href.split("/").slice(-2)[0];
-      let a = await fetch(`/songs/${folder}/info.json`);
+    console.log(e.href);
+    if (e.href.includes("/songs/")) {
+      let folder = e.href.split("/").slice(-2)[1];
+      console.log(folder);
+      let a = await fetch(`songs/${folder}/info.json`);
       let response = await a.json();
+      console.log(response);
       cardContainer.innerHTML =
         cardContainer.innerHTML +
         ` <div data-folder="${folder}" class="card">
@@ -103,7 +106,7 @@ async function displayAlbums() {
         </svg>
       </div>
       <img
-        src="/songs/${folder}/cover.jpg"
+        src="songs/${folder}/cover.jpg"
         alt=""
       />
       <h2>${response.title}</h2>
